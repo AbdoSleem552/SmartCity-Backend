@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City — DSL Documentation</title>
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/editor.css">
+    <style>
+        body { padding: 40px; }
+        .docs-page-container { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); max-width: 900px; margin: 0 auto; }
+        .docs-page-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; margin-bottom: 20px; }
+        .docs-page-header h1 { margin: 0; color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+    <div class="docs-page-container">
+        <div class="docs-page-header">
+            <h1>📖 Smart City DSL Documentation</h1>
+            <p class="docs-intro" style="margin-top:10px;">Welcome to the advanced procedural and declarative logic engine. Use natural language commands to control the smart city.</p>
+        </div>
+        
+        <h4 class="docs-section-title">✨ Procedural Examples</h4>
+        
+        <div class="logic-example-box" style="margin-bottom:16px;">
+            <div class="logic-example-header">
+                <span class="logic-example-dot red"></span><span class="logic-example-dot yellow"></span><span class="logic-example-dot green"></span>
+                <span class="logic-example-title">toggle-every-3-sec.smart</span>
+            </div>
+            <div class="logic-example-body">
+                <div class="logic-example-line"><span class="hl-condition">loop:</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">Turn on</span> <span class="hl-zone">floor1</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">wait</span> <span class="hl-time">3 sec</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">Turn off</span> <span class="hl-zone">floor1</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">wait</span> <span class="hl-time">3 sec</span></div>
+                <div class="logic-example-line"><span class="hl-condition">end loop</span></div>
+            </div>
+        </div>
+
+        <div class="logic-example-box" style="margin-bottom:16px;">
+            <div class="logic-example-header">
+                <span class="logic-example-dot red"></span><span class="logic-example-dot yellow"></span><span class="logic-example-dot green"></span>
+                <span class="logic-example-title">fast-blinking-alarm.smart</span>
+            </div>
+            <div class="logic-example-body">
+                <div class="logic-example-line"><span class="hl-condition">loop:</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-condition">break when</span> <span class="hl-sensor">gas</span> <span class="hl-operator">is</span> <span class="hl-sensor">safe</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">Turn on</span> <span class="hl-zone">mosque</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">wait</span> <span class="hl-time">500ms</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">Turn off</span> <span class="hl-zone">mosque</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">wait</span> <span class="hl-time">500ms</span></div>
+                <div class="logic-example-line"><span class="hl-condition">end loop</span></div>
+            </div>
+        </div>
+
+        <div class="logic-example-box" style="margin-bottom:24px;">
+            <div class="logic-example-header">
+                <span class="logic-example-dot red"></span><span class="logic-example-dot yellow"></span><span class="logic-example-dot green"></span>
+                <span class="logic-example-title">conditional-logic.smart</span>
+            </div>
+            <div class="logic-example-body">
+                <div class="logic-example-line"><span class="hl-condition">loop:</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-condition">if</span> <span class="hl-sensor">light</span> <span class="hl-operator">is</span> <span class="hl-sensor">dark</span><span class="hl-punct">:</span></div>
+                <div class="logic-example-line" style="padding-left:32px;"><span class="hl-keyword">Turn on</span> <span class="hl-zone">street</span> <span class="hl-light">lights</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-condition">end if</span></div>
+                <div class="logic-example-line" style="padding-left:16px;"><span class="hl-keyword">wait</span> <span class="hl-time">1000ms</span></div>
+                <div class="logic-example-line"><span class="hl-condition">end loop</span></div>
+            </div>
+        </div>
+
+        <h4 class="docs-section-title">✨ Declarative Examples</h4>
+
+        <div class="logic-example-box" style="margin-bottom:24px;">
+            <div class="logic-example-header">
+                <span class="logic-example-dot red"></span><span class="logic-example-dot yellow"></span><span class="logic-example-dot green"></span>
+                <span class="logic-example-title">basic-rules.smart</span>
+            </div>
+            <div class="logic-example-body">
+                <div class="logic-example-line"><span class="hl-keyword">Turn on</span> <span class="hl-zone">mosque</span> <span class="hl-light">lights</span> <span class="hl-operator">from</span> <span class="hl-time">18:00</span> <span class="hl-operator">to</span> <span class="hl-time">23:00</span><span class="hl-punct">.</span></div>
+                <div class="logic-example-line"><span class="hl-keyword">Switch off</span> <span class="hl-zone">castle</span> <span class="hl-light">lights</span> <span class="hl-condition">when</span> <span class="hl-sensor">light</span> <span class="hl-operator">is</span> <span class="hl-sensor">bright</span><span class="hl-punct">.</span></div>
+                <div class="logic-example-line"><span class="hl-keyword">Keep</span> <span class="hl-zone">floor1</span> <span class="hl-keyword">always on</span> <span class="hl-condition">when</span> <span class="hl-sensor">gas</span> <span class="hl-operator">is</span> <span class="hl-sensor">safe</span><span class="hl-punct">.</span></div>
+                <div class="logic-example-line"><span style="color:var(--text-muted); font-style:italic;">// Zone Dependencies (Chain Rules)</span></div>
+                <div class="logic-example-line"><span class="hl-keyword">Turn on</span> <span class="hl-zone">floor1</span> <span class="hl-condition">when</span> <span class="hl-zone">floor2</span> <span class="hl-operator">is</span> <span class="hl-keyword">turned on</span><span class="hl-punct">.</span></div>
+            </div>
+        </div>
+
+        <!-- Keywords Grid -->
+        <h4 class="docs-section-title">🔤 Vocabulary Reference</h4>
+        <div class="logic-keywords-grid">
+            <div class="logic-keyword-group"><div class="keyword-group-title">Operations</div><div class="keyword-tags"><span class="hl-keyword">Turn on</span> <span class="hl-keyword">Turn off</span> <span class="hl-keyword">Keep</span> <span class="hl-keyword">wait X sec</span> <span class="hl-keyword">wait X ms</span></div></div>
+            <div class="logic-keyword-group"><div class="keyword-group-title">Blocks</div><div class="keyword-tags"><span class="hl-condition">loop:</span> <span class="hl-condition">end loop</span> <span class="hl-condition">if [cond]:</span> <span class="hl-condition">end if</span> <span class="hl-condition">break when</span></div></div>
+            <div class="logic-keyword-group"><div class="keyword-group-title">Zones</div><div class="keyword-tags"><span class="hl-zone">floor1</span> <span class="hl-zone">floor2</span> <span class="hl-zone">castle</span> <span class="hl-zone">mosque</span> <span class="hl-zone">street</span></div></div>
+            <div class="logic-keyword-group"><div class="keyword-group-title">Sensors</div><div class="keyword-tags"><span class="hl-sensor">gas safe</span> <span class="hl-sensor">gas danger</span> <span class="hl-sensor">light dark</span> <span class="hl-sensor">light bright</span></div></div>
+        </div>
+    </div>
+</body>
+</html>

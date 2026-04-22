@@ -1,0 +1,47 @@
+/* ─── Responsive Breakpoints ───────────────────────────────────────────────── */
+
+/* ── Zone body: single-column on medium screens ── */
+@media (max-width: 900px) {
+    .zone-body { grid-template-columns: 1fr; }
+    .zone-visual { max-height: 160px; overflow: hidden; }
+    .zone-visual svg { max-width: 200px; }
+}
+
+/* ── Tablet ── */
+@media (max-width: 768px) {
+    .top-nav { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+    .nav-links { order: 3; width: 100%; justify-content: center; }
+
+    .dashboard { padding: 20px 16px 60px; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+
+    .zone-header { padding: 16px 16px 0 16px; }
+    .zone-body   { padding: 12px 16px 16px 16px; }
+    .zone-data-row { grid-template-columns: 1fr; }
+
+    .illumination-grid { grid-template-columns: 1fr; }
+
+    .login-card { padding: 36px 24px; }
+    .gas-value  { font-size: 2.5rem; }
+    .control-grid { grid-template-columns: 1fr; }
+    .city-clock { font-size: 0.8rem; padding: 4px 10px; }
+
+    /* Editor */
+    .code-editor-body { min-height: 120px; }
+    .code-textarea { min-height: 120px; font-size: 0.76rem; }
+    .code-highlight-overlay { font-size: 0.76rem; }
+    .line-numbers { width: 36px; }
+    .line-num { font-size: 0.68rem; padding-right: 8px; }
+    .logic-example-line { font-size: 0.72rem; }
+    .editor-actions { flex-direction: column; align-items: flex-start; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+    .nav-brand h2 { font-size: 1rem; }
+    .speed-buttons { gap: 6px; }
+    .speed-btn { padding: 6px 12px; font-size: 0.75rem; }
+
+    .code-editor-toolbar { flex-direction: column; gap: 6px; align-items: flex-start; }
+    .toolbar-right { width: 100%; justify-content: flex-end; }
+}
