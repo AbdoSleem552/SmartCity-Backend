@@ -332,24 +332,24 @@ end
 > **📌 TODO:** Add screenshots of the following pages:
 
 ### Login Page
-<!-- ![Login Page](screenshots/login.png) -->
-`🖼️ Screenshot needed — Login page with glassmorphism form`
+![Login Page](screenshots/login.png)
+<!-- `🖼️ Screenshot needed — Login page with glassmorphism form` -->
 
 ### Home Page — Dashboard
-<!-- ![Home Dashboard](screenshots/home.png) -->
-`🖼️ Screenshot needed — Home page with animated SVG city, sensor cards, and city clock`
+![Home Dashboard](screenshots/home.png)
+<!-- `🖼️ Screenshot needed — Home page with animated SVG city, sensor cards, and city clock` -->
 
 ### Control Panel
-<!-- ![Control Panel](screenshots/control.png) -->
-`🖼️ Screenshot needed — Control page with threshold sliders, speaker controls, and illumination toggles`
+![Control Panel](screenshots/control.png)
+<!-- `🖼️ Screenshot needed — Control page with threshold sliders, speaker controls, and illumination toggles` -->
 
 ### Logic Editor
-<!-- ![Logic Editor](screenshots/logic.png) -->
-`🖼️ Screenshot needed — Logic page with rule file sidebar and syntax-highlighted code editor`
+![Logic Editor](screenshots/logic.png)
+<!-- `🖼️ Screenshot needed — Logic page with rule file sidebar and syntax-highlighted code editor` -->
 
 ### Docs Page
-<!-- ![Docs Page](screenshots/docs.png) -->
-`🖼️ Screenshot needed — Documentation page with rule language syntax reference`
+![Docs Page](screenshots/docs.png)
+<!-- `🖼️ Screenshot needed — Documentation page with rule language syntax reference` -->
 
 ---
 
