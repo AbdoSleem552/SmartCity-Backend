@@ -12,8 +12,11 @@ export function renderHomePage() {
 
     const gasLevel   = t.gas || 0;
     const gasPercent = Math.min(100, (gasLevel / 4095) * 100);
-    const gasClass   = gasLevel > (t.gas_threshold || 1000) ? 'danger' : gasLevel > 600 ? 'warning' : 'safe';
+    const gasState   = t.gas_state || 'CLEAN_AIR';
+    const gasClass   = gasState === 'SMOKE_ALARM' ? 'danger' : gasState === 'GAS_WARNING' ? 'warning' : gasState === 'PERFUME' ? 'active' : 'safe';
     const gasDanger  = t.gas_danger || false;
+    const gasBadgeLabel = gasState === 'CLEAN_AIR' ? 'CLEAN AIR' : gasState === 'GAS_WARNING' ? 'WARNING' : gasState === 'PERFUME' ? 'PERFUME' : 'SMOKE ALARM';
+
 
     content.innerHTML = `
     <h1 class="page-title">Dashboard</h1>
@@ -31,19 +34,23 @@ export function renderHomePage() {
                     <div class="zone-desc">Residential building · 2 floors</div>
                 </div>
             </div>
-            <span class="card-badge ${gasDanger ? 'badge-danger' : 'badge-safe'}" id="gas-badge">${gasDanger ? 'GAS ALERT' : 'SAFE'}</span>
+            <span class="card-badge badge-${gasClass}" id="gas-badge">${gasBadgeLabel}</span>
         </div>
         <div class="zone-body">
             <div class="zone-visual" id="svg-home-container">${svgHome(il, gasDanger)}</div>
             <div class="zone-data">
-                <div class="zone-data-card">
-                    <div class="zd-header">
-                        <span class="zd-label">🔥 Gas Sensor (MQ2)</span>
-                        <span class="card-badge ${gasDanger ? 'badge-danger' : 'badge-safe'}" id="gas-badge-mini" style="font-size:0.65rem">${gasDanger ? 'DANGER' : 'SAFE'}</span>
+                <div class="zone-data-card ai-pred-card-compact">
+                    <div class="ai-compact-header">
+                        <div class="ai-compact-title-group">
+                            <span class="zd-label">🧠 AI (MQ2)</span>
+                            <div class="ai-status-pulse ${gasClass}" id="ai-pulse"></div>
+                        </div>
+                        <span class="ai-compact-raw">ADC: <span id="gas-value" class="${gasClass}">${gasLevel}</span></span>
                     </div>
-                    <div class="gas-value ${gasClass}" id="gas-value" style="font-size:2.2rem">${gasLevel}</div>
-                    <div class="gas-range">0 — 4095 (threshold: ${t.gas_threshold || 1000})</div>
-                    <div class="gas-bar">
+                    <div class="ai-prediction-box ${gasClass}" id="ai-prediction-box">
+                        <div class="ai-pred-result" id="ai-pred-result">${gasBadgeLabel}</div>
+                    </div>
+                    <div class="gas-bar" style="margin-top: 8px;">
                         <div class="gas-bar-fill ${gasClass}" id="gas-bar" style="width:${gasPercent}%"></div>
                     </div>
                 </div>

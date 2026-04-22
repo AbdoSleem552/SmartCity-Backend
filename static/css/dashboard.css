@@ -197,3 +197,77 @@
 .zone-section.gas-alert { border-color:rgba(255,51,102,0.35) !important; animation:fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) backwards, dangerPulse 1.5s ease-in-out infinite; }
 .zone-alert-banner { display:none; background:linear-gradient(90deg,rgba(255,51,102,0.15),rgba(255,51,102,0.05)); border-bottom:1px solid rgba(255,51,102,0.2); padding:8px 24px; font-size:0.8rem; font-weight:700; color:var(--accent-red); align-items:center; gap:8px; }
 .zone-section.gas-alert .zone-alert-banner { display:flex; }
+
+/* ─── Compact AI Prediction Card Styles ─── */
+.ai-pred-card-compact {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.7));
+    border: 1px solid rgba(0, 212, 255, 0.15);
+    box-shadow: inset 0 0 15px rgba(0, 212, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    overflow: hidden;
+}
+.ai-pred-card-compact::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    animation: sweep 4s infinite linear;
+}
+
+.ai-compact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.ai-compact-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ai-compact-raw {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+.ai-compact-raw span {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-left: 4px;
+    transition: color var(--transition-base);
+}
+.ai-compact-raw span.safe { color: var(--accent-green); }
+.ai-compact-raw span.warning { color: var(--accent-amber); }
+.ai-compact-raw span.danger { color: var(--accent-red); }
+.ai-compact-raw span.active { color: var(--accent-cyan); }
+
+.ai-status-pulse {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+}
+.ai-status-pulse.safe   { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); animation: pulseDot 2s infinite; }
+.ai-status-pulse.warning{ background: var(--accent-amber); box-shadow: 0 0 8px var(--accent-amber); animation: pulseDot 1.5s infinite; }
+.ai-status-pulse.danger { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); animation: pulseDot 1s infinite; }
+.ai-status-pulse.active { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); animation: pulseDot 1.5s infinite; }
+
+.ai-prediction-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 6px 0;
+    text-align: center;
+    transition: var(--transition-base);
+}
+.ai-prediction-box.safe { border-color: rgba(0, 232, 143, 0.3); background: rgba(0, 232, 143, 0.05); }
+.ai-prediction-box.warning { border-color: rgba(255, 170, 0, 0.3); background: rgba(255, 170, 0, 0.05); }
+.ai-prediction-box.danger { border-color: rgba(255, 51, 102, 0.3); background: rgba(255, 51, 102, 0.08); box-shadow: inset 0 0 15px rgba(255, 51, 102, 0.1); }
+.ai-prediction-box.active { border-color: rgba(0, 212, 255, 0.3); background: rgba(0, 212, 255, 0.08); box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.15); }
+
+.ai-pred-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+

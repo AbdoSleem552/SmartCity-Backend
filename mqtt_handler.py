@@ -6,6 +6,7 @@ import time
 from extensions import mqtt_client, socketio, _mqtt_client_id
 from config import MQTT_BROKER, MQTT_PORT, MQTT_USER, MQTT_PASSWORD, TOPIC_TELEMETRY, TOPIC_COMMANDS
 import rules_engine
+from mq2_model import predict_gas_state
 
 
 def on_connect(client, userdata, flags, rc):
@@ -38,7 +39,10 @@ def on_message(client, userdata, msg):
             snap = dict(rules_engine.latest_telemetry)
 
         rules_engine.gas_history.append({"value": snap.get("gas", 0), "timestamp": time.time()})
-        gas_danger = snap.get("gas", 0) > rules_engine.GAS_DANGER_THRESHOLD
+        
+        gas_val = snap.get("gas", 0)
+        gas_state = predict_gas_state(gas_val)
+        gas_danger = gas_state in ["GAS_WARNING", "SMOKE_ALARM"]
 
         with rules_engine.illum_lock:
             il_snap = dict(rules_engine.illumination)
@@ -48,6 +52,7 @@ def on_message(client, userdata, msg):
             **snap,
             "illumination":           il_snap,
             "gas_danger":             gas_danger,
+            "gas_state":              gas_state,
             "gas_threshold":          rules_engine.GAS_DANGER_THRESHOLD,
             "street_light_threshold": rules_engine.STREET_LIGHT_THRESHOLD,
             "city_lights_logic":      rules_engine.CITY_LIGHTS_LOGIC,

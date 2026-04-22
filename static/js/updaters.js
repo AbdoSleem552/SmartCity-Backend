@@ -49,15 +49,24 @@ export function updateDashboardUI() {
     // Gas
     const gasLevel   = t.gas || 0;
     const gasPercent = Math.min(100, (gasLevel / 4095) * 100);
-    const gasClass   = gasLevel > (t.gas_threshold || 1000) ? 'danger' : gasLevel > 600 ? 'warning' : 'safe';
+    const gasState   = t.gas_state || 'CLEAN_AIR';
+    const gasClass   = gasState === 'SMOKE_ALARM' ? 'danger' : gasState === 'GAS_WARNING' ? 'warning' : gasState === 'PERFUME' ? 'active' : 'safe';
     const gasDanger  = t.gas_danger || false;
 
     const gasVal   = document.getElementById('gas-value');
     const gasBar   = document.getElementById('gas-bar');
     const gasBadge = document.getElementById('gas-badge');
-    if (gasVal)   { gasVal.textContent = gasLevel; gasVal.className = 'gas-value ' + gasClass; }
+    const aiPulse = document.getElementById('ai-pulse');
+    const aiPredBox = document.getElementById('ai-prediction-box');
+    const aiPredResult = document.getElementById('ai-pred-result');
+    const gasBadgeLabel = gasState === 'CLEAN_AIR' ? 'CLEAN AIR' : gasState === 'GAS_WARNING' ? 'WARNING' : gasState === 'PERFUME' ? 'PERFUME' : 'SMOKE ALARM';
+
+    if (gasVal)   { gasVal.textContent = gasLevel; gasVal.className = gasClass; }
     if (gasBar)   { gasBar.style.width = gasPercent + '%'; gasBar.className = 'gas-bar-fill ' + gasClass; }
-    if (gasBadge) { gasBadge.textContent = gasDanger ? 'DANGER' : 'SAFE'; gasBadge.className = 'card-badge ' + (gasDanger ? 'badge-danger' : 'badge-safe'); }
+    if (gasBadge) { gasBadge.textContent = gasBadgeLabel; gasBadge.className = 'card-badge badge-' + gasClass; }
+    if (aiPulse) { aiPulse.className = 'ai-status-pulse ' + gasClass; }
+    if (aiPredBox) { aiPredBox.className = 'ai-prediction-box ' + gasClass; }
+    if (aiPredResult) { aiPredResult.textContent = gasBadgeLabel; }
 
     // Parking
     updateSlot('1', t.ir1);
