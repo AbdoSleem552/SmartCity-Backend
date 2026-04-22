@@ -329,8 +329,6 @@ end
 
 ## 📸 Screenshots
 
-> **📌 TODO:** Add screenshots of the following pages:
-
 ### Login Page
 ![Login Page](screenshots/login.png)
 <!-- `🖼️ Screenshot needed — Login page with glassmorphism form` -->
