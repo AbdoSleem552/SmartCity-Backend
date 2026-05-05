@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     t = threading.Thread(
         target=city_timer_thread,
-        args=(socketio, _rules_fn),
+        args=(socketio, _rules_fn, mqtt_client, TOPIC_COMMANDS),
         daemon=True,
     )
     t.start()

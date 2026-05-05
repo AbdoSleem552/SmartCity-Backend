@@ -1,0 +1,359 @@
+/* ─── Premium Mosque & Prayer Enhancements ───────────────────────────── */
+
+/* ── Dashboard: Prayer Times Section ──────────────────────────────────── */
+.prayer-times-section {
+    padding: 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0, 232, 143, 0.02));
+    border-top: 1px solid var(--border-glass);
+}
+
+.prayer-times-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.prayer-times-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.prayer-times-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 16px;
+    background: var(--accent-green);
+    border-radius: 4px;
+}
+
+.prayer-adhan-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-base);
+}
+.prayer-adhan-badge.enabled {
+    background: rgba(0, 232, 143, 0.1);
+    color: var(--accent-green);
+    border: 1px solid rgba(0, 232, 143, 0.3);
+    box-shadow: 0 0 15px rgba(0, 232, 143, 0.1);
+}
+.prayer-adhan-badge.disabled {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prayer-times-table {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.prayer-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 70px 80px;
+    align-items: center;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    gap: 12px;
+}
+.prayer-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.prayer-row.prayer-next {
+    background: linear-gradient(90deg, rgba(0, 232, 143, 0.1), rgba(0, 232, 143, 0.02));
+    border: 1px solid rgba(0, 232, 143, 0.3);
+    border-left: 4px solid var(--accent-green);
+    box-shadow: 0 4px 20px rgba(0, 232, 143, 0.08);
+}
+
+.prayer-row.prayer-past {
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
+.prayer-row.prayer-past:hover {
+    opacity: 0.6;
+}
+
+.prayer-icon {
+    font-size: 1.2rem;
+    text-align: center;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.prayer-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+.prayer-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    text-align: right;
+}
+
+.prayer-next .prayer-time {
+    color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(0, 232, 143, 0.4);
+}
+
+.prayer-indicator {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--accent-green);
+    text-align: right;
+    letter-spacing: 1px;
+    animation: slidePulse 2s ease-in-out infinite;
+}
+
+@keyframes slidePulse {
+    0%, 100% { opacity: 0.7; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(-4px); }
+}
+
+/* ── Dashboard: Adhan Playing Badge ───────────────────────────────────── */
+.badge-adhan-pulse {
+    background: linear-gradient(90deg, rgba(0, 232, 143, 0.2), rgba(0, 212, 255, 0.2)) !important;
+    color: #fff !important;
+    border: 1px solid rgba(0, 232, 143, 0.5);
+    animation: adhanPulse 2s ease-in-out infinite;
+    text-shadow: 0 0 8px rgba(0, 232, 143, 0.6);
+}
+
+@keyframes adhanPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 232, 143, 0.2), inset 0 0 10px rgba(0, 212, 255, 0.1); }
+    50% { box-shadow: 0 0 25px rgba(0, 232, 143, 0.5), inset 0 0 20px rgba(0, 212, 255, 0.3); }
+}
+
+.adhan-active {
+    border: 1px solid rgba(0, 232, 143, 0.3) !important;
+    box-shadow: 0 0 40px rgba(0, 232, 143, 0.1);
+}
+
+/* ── Control Center: Track Player ─────────────────────────────────────── */
+.track-player-section {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,212,255,0.05));
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 8px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+.track-player-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.track-select {
+    flex: 1;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-base);
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%2300d4ff' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+}
+.track-select:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+}
+.track-select option {
+    background: #0c1120;
+    color: var(--text-primary);
+}
+
+.track-player-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* ── Control Center: Prayer Editor ────────────────────────────────────── */
+.prayer-editor-section {
+    margin-top: 8px;
+}
+
+.prayer-editor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.prayer-editor-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: var(--transition-base);
+}
+.prayer-editor-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(0, 232, 143, 0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.prayer-editor-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prayer-time-input {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--accent-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    font-weight: 800;
+    outline: none;
+    transition: var(--transition-base);
+    width: 110px;
+    text-align: center;
+}
+.prayer-time-input:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(0, 232, 143, 0.2);
+}
+
+.prayer-time-input::-webkit-calendar-picker-indicator {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(90deg); /* Make it greenish */
+    opacity: 0.7;
+    cursor: pointer;
+}
+.prayer-time-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* ── Control Center: Track Library ────────────────────────────────────── */
+.track-library-section {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.track-library-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.track-lib-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 36px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: var(--transition-base);
+}
+.track-lib-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.track-lib-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.3);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.track-lib-name {
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition-base);
+    width: 100%;
+}
+.track-lib-name:focus {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-cyan);
+    border-radius: var(--radius-sm);
+}
+
+.track-lib-del {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 51, 102, 0.1);
+    border: 1px solid rgba(255, 51, 102, 0.2);
+    color: var(--accent-red);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-base);
+    font-size: 1rem;
+}
+.track-lib-del:hover {
+    background: var(--accent-red);
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 51, 102, 0.3);
+}
+
+.track-library-list::-webkit-scrollbar { width: 6px; }
+.track-library-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 6px; }
+.track-library-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 6px; }
+.track-library-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }

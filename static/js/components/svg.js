@@ -20,6 +20,14 @@ export function svgDefs() {
             <stop offset="0%"   stop-color="#1a2035"/>
             <stop offset="100%" stop-color="#0f1520"/>
         </linearGradient>
+        <linearGradient id="car1Grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0077b6"/>
+            <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="car2Grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#db2777"/>
+            <stop offset="100%" stop-color="#ff3366"/>
+        </linearGradient>
     </defs>`;
 }
 
@@ -122,16 +130,38 @@ export function svgCastle(il, ir1, ir2) {
         <rect x="20" y="160" width="80" height="24" rx="3" fill="rgba(255,255,255,0.03)" stroke="#334155" stroke-width="0.5" stroke-dasharray="3,2"/>
         <text x="48" y="171" fill="#475569" font-size="5" font-family="Inter,sans-serif" text-anchor="middle">PARKING</text>
         <g id="svg-car-1" class="svg-car ${ir1 ? 'visible' : 'hidden'}">
-            <rect x="24" y="173" width="28" height="10" rx="3" fill="#3b82f6" opacity="0.8"/>
-            <rect x="28" y="170" width="20" height="6"  rx="2" fill="#3b82f6" opacity="0.6"/>
-            <circle cx="30" cy="183" r="3" fill="#1e293b" stroke="#475569" stroke-width="0.6"/>
-            <circle cx="46" cy="183" r="3" fill="#1e293b" stroke="#475569" stroke-width="0.6"/>
+            <!-- Shadow -->
+            <ellipse cx="38" cy="182" rx="14" ry="2" fill="#000" opacity="0.5"/>
+            <!-- Body -->
+            <path d="M25,178 Q24,178 24,176 L25,173 Q26,170 30,169 L36,168 L45,171 Q49,172 51,174 L52,176 Q52,178 48,178 Z" fill="url(#car1Grad)"/>
+            <!-- Windows -->
+            <path d="M30,169.5 L36,168.5 L38,171.5 L28,171.5 Z" fill="#0a0f18"/>
+            <path d="M39,169 L44,171.5 L39,171.5 Z" fill="#0a0f18"/>
+            <!-- Wheels -->
+            <circle cx="30" cy="178" r="3.5" fill="#0f1520" stroke="#334155" stroke-width="1"/>
+            <circle cx="30" cy="178" r="1" fill="#00d4ff"/>
+            <circle cx="45" cy="178" r="3.5" fill="#0f1520" stroke="#334155" stroke-width="1"/>
+            <circle cx="45" cy="178" r="1" fill="#00d4ff"/>
+            <!-- Lights -->
+            <rect x="50" y="174" width="2" height="1.5" rx="0.5" fill="#fff" filter="url(#windowGlow)"/>
+            <rect x="23.5" y="174" width="2" height="1.5" rx="0.5" fill="#ff3366"/>
         </g>
         <g id="svg-car-2" class="svg-car ${ir2 ? 'visible' : 'hidden'}">
-            <rect x="62" y="173" width="28" height="10" rx="3" fill="#ef4444" opacity="0.8"/>
-            <rect x="66" y="170" width="20" height="6"  rx="2" fill="#ef4444" opacity="0.6"/>
-            <circle cx="68" cy="183" r="3" fill="#1e293b" stroke="#475569" stroke-width="0.6"/>
-            <circle cx="84" cy="183" r="3" fill="#1e293b" stroke="#475569" stroke-width="0.6"/>
+            <!-- Shadow -->
+            <ellipse cx="76" cy="182" rx="14" ry="2" fill="#000" opacity="0.5"/>
+            <!-- Body -->
+            <path d="M63,178 Q62,178 62,176 L63,173 Q64,170 68,169 L74,168 L83,171 Q87,172 89,174 L90,176 Q90,178 86,178 Z" fill="url(#car2Grad)"/>
+            <!-- Windows -->
+            <path d="M68,169.5 L74,168.5 L76,171.5 L66,171.5 Z" fill="#0a0f18"/>
+            <path d="M77,169 L82,171.5 L77,171.5 Z" fill="#0a0f18"/>
+            <!-- Wheels -->
+            <circle cx="68" cy="178" r="3.5" fill="#0f1520" stroke="#334155" stroke-width="1"/>
+            <circle cx="68" cy="178" r="1" fill="#ff3366"/>
+            <circle cx="83" cy="178" r="3.5" fill="#0f1520" stroke="#334155" stroke-width="1"/>
+            <circle cx="83" cy="178" r="1" fill="#ff3366"/>
+            <!-- Lights -->
+            <rect x="88" y="174" width="2" height="1.5" rx="0.5" fill="#fff" filter="url(#windowGlow)"/>
+            <rect x="61.5" y="174" width="2" height="1.5" rx="0.5" fill="#00d4ff"/>
         </g>
         <circle cx="53"  cy="35" r="3" fill="${lColor}" opacity="${lOp}" filter="${glowF}"/>
         <circle cx="187" cy="35" r="3" fill="${lColor}" opacity="${lOp}" filter="${glowF}"/>

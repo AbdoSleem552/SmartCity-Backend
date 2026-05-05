@@ -1,0 +1,41 @@
+{
+  "prayer_times": {
+    "Fajr": "05:00",
+    "Dhuhr": "12:30",
+    "Asr": "15:45",
+    "Maghrib": "18:30",
+    "Isha": "20:00"
+  },
+  "adhan_track": 1,
+  "adhan_enabled": true,
+  "track_library": [
+    {
+      "number": 1,
+      "name": "Adhan – Madinah"
+    },
+    {
+      "number": 2,
+      "name": "Quran Recitation"
+    },
+    {
+      "number": 3,
+      "name": "City Announcement"
+    },
+    {
+      "number": 5,
+      "name": "Alarm / Siren"
+    },
+    {
+      "number": 6,
+      "name": "Welcome Jingle"
+    },
+    {
+      "number": 7,
+      "name": "Traffic Alert"
+    },
+    {
+      "number": 8,
+      "name": "Night Ambience"
+    }
+  ]
+}

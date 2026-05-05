@@ -53,14 +53,14 @@ telemetry_lock = threading.Lock()
 gas_history: deque = deque(maxlen=60)
 
 # ── Illumination zones ──
-illumination = {"floor1": False, "floor2": False, "castle": False, "mosque": False}
+illumination = {"floor1": False, "floor2": False, "castle": False, "mosque": False, "street": False}
 illum_lock   = threading.Lock()
 
 # ── Parsed rules ──
 parsed_rules: list = []
 rules_lock    = threading.Lock()
 
-VALID_ZONES = ["floor1", "floor2", "castle", "mosque"]
+VALID_ZONES = ["floor1", "floor2", "castle", "mosque", "street"]
 
 # ── Procedural execution ──
 procedural_blocks: list = []
@@ -165,10 +165,7 @@ def parse_single_rule(text, line_num):
         m_zone = re.search(r"\bwhen\b\s+(floor1|floor2|floor\s*1|floor\s*2|castle|mosque|street)\s+is\s+(turned\s+on|on|turned\s+off|off)\b", t)
         if m_zone:
             z_cond = m_zone.group(1).replace(" ", "")
-            if z_cond == "street":
-                 # Not a standard zone in backend but UI keywords use it; map it or ignore
-                 pass
-            elif "on" in m_zone.group(2):
+            if "on" in m_zone.group(2):
                 condition = f"zone_on_{z_cond}"
             else:
                 condition = f"zone_off_{z_cond}"

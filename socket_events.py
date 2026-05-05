@@ -14,6 +14,16 @@ def handle_connect():
     with rules_engine.illum_lock:
         il_snap = dict(rules_engine.illumination)
     gas_danger = snap.get("gas", 0) > rules_engine.GAS_DANGER_THRESHOLD
+
+    # Prayer config
+    try:
+        import prayer_store
+        prayer_config = prayer_store.get_config()
+        ct = get_city_time()
+        prayer_config["next_prayer"] = prayer_store.get_next_prayer(ct["hours"], ct["minutes"])
+    except Exception:
+        prayer_config = {}
+
     emit("telemetry", {
         **snap,
         "illumination":           il_snap,
@@ -25,6 +35,7 @@ def handle_connect():
     })
     emit("city_time", get_city_time())
     emit("illumination_update", il_snap)
+    emit("prayer_config", prayer_config)
 
 
 @socketio.on("disconnect")

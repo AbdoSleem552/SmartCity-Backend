@@ -22,3 +22,15 @@ export async function apiGet(url) {
     });
     return res.json();
 }
+
+export async function apiPut(url, data) {
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + state.token,
+        },
+        body: JSON.stringify(data),
+    });
+    return res.json();
+}

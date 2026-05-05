@@ -47,6 +47,15 @@ def on_message(client, userdata, msg):
         with rules_engine.illum_lock:
             il_snap = dict(rules_engine.illumination)
 
+        # Prayer config
+        try:
+            import prayer_store
+            prayer_config = prayer_store.get_config()
+            ct = get_city_time()
+            prayer_config["next_prayer"] = prayer_store.get_next_prayer(ct["hours"], ct["minutes"])
+        except Exception:
+            prayer_config = {}
+
         from city_timer import get_city_time
         socketio.emit("telemetry", {
             **snap,
@@ -57,6 +66,7 @@ def on_message(client, userdata, msg):
             "street_light_threshold": rules_engine.STREET_LIGHT_THRESHOLD,
             "city_lights_logic":      rules_engine.CITY_LIGHTS_LOGIC,
             "city_time":              get_city_time(),
+            "prayer_config":          prayer_config,
         })
     except Exception as e:
         print(f"[MQTT] on_message error: {e}")

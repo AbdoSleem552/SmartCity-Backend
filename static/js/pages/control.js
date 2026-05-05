@@ -3,14 +3,27 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { state } from '../state.js';
-import { apiPost } from '../api.js';
+import { apiPost, apiGet, apiPut } from '../api.js';
 import { renderToggle } from '../components/toggle.js';
+
+function _trackOption(num, name, selected) {
+    return `<option value="${num}" ${num === selected ? 'selected' : ''}>${num}. ${name}</option>`;
+}
+
+function _trackLibraryOptions(pc, selectedTrack) {
+    const lib = pc.track_library || [];
+    if (lib.length === 0) {
+        return Array.from({length: 10}, (_, i) => _trackOption(i+1, `Track ${i+1}`, selectedTrack)).join('');
+    }
+    return lib.map(t => _trackOption(t.number, t.name, selectedTrack)).join('');
+}
 
 export function renderControlPage() {
     const content = document.getElementById('page-content');
     const il    = state.illumination;
     const t     = state.telemetry;
     const speed = state.cityTime.speed || 1;
+    const pc    = state.prayerConfig;
 
     content.innerHTML = `
     <h1 class="page-title">City Control Center</h1>
@@ -82,26 +95,120 @@ export function renderControlPage() {
             <div class="zone-header">
                 <div class="zone-header-left">
                     <div class="zone-icon" style="background:var(--accent-emerald-dim)">🕌</div>
-                    <div><h3>Mosque</h3><div class="zone-desc">Lights &amp; Athan Audio</div></div>
+                    <div><h3>Mosque</h3><div class="zone-desc">Lights, Speaker &amp; Prayer System</div></div>
                 </div>
             </div>
             <div class="zone-body" style="grid-template-columns:1fr">
                 <div style="display:flex;flex-direction:column;gap:16px;padding:20px">
                     ${renderToggle('mosque','💡','Mosque Lights',il.mosque)}
+
                     <div style="height:1px;background:var(--border-light);margin:8px 0"></div>
+
+                    <!-- Volume -->
                     <div class="slider-header" style="margin-bottom:8px">
                         <span class="slider-label">🔈 Volume</span>
                         <span class="slider-value" id="ctrl-vol-display">${t.speaker_volume}</span>
                     </div>
                     <input type="range" id="ctrl-volume" min="0" max="100" value="${t.speaker_volume}">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
-                        <div style="display:flex;align-items:center;gap:8px">
-                            <span>Track:</span>
-                            <input type="number" id="ctrl-track" min="1" max="99" value="1" class="time-input" style="width:60px;text-align:center">
+
+                    <!-- Track Player -->
+                    <div class="track-player-section">
+                        <div class="slider-label" style="margin-bottom:10px">🎵 Track Player</div>
+                        <div class="track-player-controls">
+                            <select id="ctrl-track-select" class="track-select">
+                                ${_trackLibraryOptions(pc, 1)}
+                            </select>
+                            <div class="track-player-buttons">
+                                <button class="btn-action btn-ghost btn-sm" id="btn-stop-audio" title="Stop">⏹</button>
+                                <button class="btn-action btn-cyan btn-sm" id="btn-play-track" title="Play">▶️</button>
+                            </div>
                         </div>
-                        <div style="display:flex;gap:8px">
-                            <button class="btn-action btn-ghost btn-sm" id="btn-stop-audio">⏹️ Stop</button>
-                            <button class="btn-action btn-cyan" id="btn-play-athan" style="background:var(--accent-green)">▶️ Play Athan</button>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRAYER TIMES CONFIGURATION -->
+        <div class="zone-section">
+            <div class="zone-accent" style="background:linear-gradient(180deg, var(--accent-emerald), var(--accent-cyan))"></div>
+            <div class="zone-header">
+                <div class="zone-header-left">
+                    <div class="zone-icon" style="background:var(--accent-emerald-dim)">🕋</div>
+                    <div><h3>Prayer Schedule</h3><div class="zone-desc">Prayer Times &amp; Auto-Adhan Settings</div></div>
+                </div>
+            </div>
+            <div class="zone-body" style="grid-template-columns:1fr">
+                <div style="display:flex;flex-direction:column;gap:16px;padding:20px">
+                    <!-- Prayer Times Editor -->
+                    <div class="prayer-editor-section">
+                        <div class="slider-label" style="margin-bottom:10px">🕋 Prayer Times</div>
+                        <div class="prayer-editor-grid" id="prayer-editor-grid">
+                            ${['Fajr','Dhuhr','Asr','Maghrib','Isha'].map(name => `
+                                <div class="prayer-editor-row">
+                                    <span class="prayer-editor-name">${{Fajr:'🌅',Dhuhr:'☀️',Asr:'🌤',Maghrib:'🌇',Isha:'🌙'}[name]} ${name}</span>
+                                    <input type="time" class="prayer-time-input" data-prayer="${name}" value="${pc.prayer_times[name] || '12:00'}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn-action btn-cyan btn-sm" id="btn-save-prayer-times" style="margin-top:12px;width:100%">💾 Save Prayer Times</button>
+                    </div>
+
+                    <div style="height:1px;background:var(--border-light);margin:8px 0"></div>
+
+                    <!-- Adhan Settings -->
+                    <div class="adhan-settings-section">
+                        <div class="toggle-row" style="margin-bottom:12px; padding:12px 16px;">
+                            <div class="toggle-info">
+                                <span class="t-icon">🔔</span>
+                                <span class="t-label">Auto-Adhan Playback</span>
+                            </div>
+                            <div style="display:flex;align-items:center;">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="ctrl-adhan-enabled" ${pc.adhan_enabled ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span style="font-size:0.85rem;margin-left:12px;color:var(--text-muted);width:50px;text-align:right;">${pc.adhan_enabled ? 'ON' : 'OFF'}</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+                            <span style="font-size:0.85rem;color:var(--text-secondary)">Adhan Track:</span>
+                            <select id="ctrl-adhan-track" class="track-select" style="flex:1">
+                                ${_trackLibraryOptions(pc, pc.adhan_track)}
+                            </select>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRACK LIBRARY (SD CARD) -->
+        <div class="zone-section">
+            <div class="zone-accent castle-accent" style="background:linear-gradient(180deg, var(--accent-purple), var(--accent-cyan))"></div>
+            <div class="zone-header">
+                <div class="zone-header-left">
+                    <div class="zone-icon" style="background:var(--accent-purple-dim)">📂</div>
+                    <div><h3>Audio Library</h3><div class="zone-desc">SD Card Track Management</div></div>
+                </div>
+            </div>
+            <div class="zone-body" style="grid-template-columns:1fr">
+                <div style="padding:20px">
+                    <div class="track-library-section" style="margin-top:0">
+                        <div class="track-library-list" id="track-library-list">
+                            ${(pc.track_library || []).map((tr, i) => `
+                                <div class="track-lib-row">
+                                    <span class="track-lib-num">${tr.number}</span>
+                                    <input class="track-lib-name" data-index="${i}" value="${tr.name}">
+                                    <button class="track-lib-del" data-index="${i}" title="Remove">✕</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:10px">
+                            <button class="btn-action btn-ghost btn-sm" id="btn-add-track" style="flex:1">＋ Add Track</button>
+                            <button class="btn-action btn-cyan btn-sm" id="btn-save-tracks" style="flex:1">💾 Save Library</button>
                         </div>
                     </div>
                 </div>
@@ -150,19 +257,21 @@ export function renderControlPage() {
             </div>
         </div>
 
-        <!-- STREET LIGHT THRESHOLD -->
+        <!-- STREET CONTROLS -->
         <div class="zone-section">
             <div class="zone-accent street-accent"></div>
             <div class="zone-header">
                 <div class="zone-header-left">
                     <div class="zone-icon" style="background:var(--accent-amber-dim)">🛣️</div>
-                    <div><h3>Street Light Auto</h3><div class="zone-desc">LDR auto-on threshold · 0 – 4095</div></div>
+                    <div><h3>Street</h3><div class="zone-desc">Street lamps &amp; auto threshold</div></div>
                 </div>
             </div>
             <div class="zone-body" style="grid-template-columns:1fr">
                 <div style="display:flex;flex-direction:column;gap:16px;padding:20px">
+                    ${renderToggle('street','💡','Street Lights',il.street)}
+                    <div style="height:1px;background:var(--border-light);margin:8px 0"></div>
                     <div class="slider-header" style="margin-bottom:8px">
-                        <span class="slider-label">🌑 Lamps ON below</span>
+                        <span class="slider-label">🌑 Auto-ON below (LDR)</span>
                         <span class="slider-value" id="light-threshold-display">${t.street_light_threshold||2000}</span>
                     </div>
                     <input type="range" id="ctrl-light-threshold" min="100" max="4095" step="50" value="${t.street_light_threshold||2000}">
@@ -191,10 +300,76 @@ export function renderControlPage() {
         volSlider.addEventListener('change', e => apiPost('/api/command', { action:'volume', level: parseInt(e.target.value) }));
     }
 
-    document.getElementById('btn-play-athan')?.addEventListener('click', () => {
-        apiPost('/api/command', { action:'play', track: parseInt(document.getElementById('ctrl-track')?.value || 1) });
+    // Track player
+    document.getElementById('btn-play-track')?.addEventListener('click', () => {
+        const sel = document.getElementById('ctrl-track-select');
+        const track = sel ? parseInt(sel.value) : 1;
+        apiPost('/api/command', { action:'play', track });
     });
-    document.getElementById('btn-stop-audio')?.addEventListener('click',   () => apiPost('/api/command', { action:'stop' }));
+    document.getElementById('btn-stop-audio')?.addEventListener('click', () => apiPost('/api/command', { action:'stop' }));
+
+    // Prayer times save
+    document.getElementById('btn-save-prayer-times')?.addEventListener('click', () => {
+        const times = {};
+        document.querySelectorAll('.prayer-time-input').forEach(inp => {
+            times[inp.dataset.prayer] = inp.value;
+        });
+        apiPut('/api/prayer/times', { times }).then(() => {
+            state.prayerConfig.prayer_times = times;
+            const btn = document.getElementById('btn-save-prayer-times');
+            if (btn) { btn.textContent = '✓ Saved!'; setTimeout(() => btn.textContent = '💾 Save Prayer Times', 2000); }
+        });
+    });
+
+    // Adhan toggle
+    document.getElementById('ctrl-adhan-enabled')?.addEventListener('change', (e) => {
+        const checked = e.target.checked;
+        apiPut('/api/prayer/adhan', { enabled: checked }).then(() => {
+            state.prayerConfig.adhan_enabled = checked;
+            const label = e.target.closest('.toggle-row')?.querySelector('div > span:last-child');
+            if (label) label.textContent = checked ? 'ON' : 'OFF';
+        });
+    });
+
+    // Adhan track selection
+    document.getElementById('ctrl-adhan-track')?.addEventListener('change', (e) => {
+        apiPut('/api/prayer/adhan', { track: parseInt(e.target.value) }).then(() => {
+            state.prayerConfig.adhan_track = parseInt(e.target.value);
+        });
+    });
+
+    // Track library — add track
+    document.getElementById('btn-add-track')?.addEventListener('click', () => {
+        const list = document.getElementById('track-library-list');
+        if (!list) return;
+        const count = list.querySelectorAll('.track-lib-row').length;
+        const num = count + 1;
+        const row = document.createElement('div');
+        row.className = 'track-lib-row';
+        row.innerHTML = `<span class="track-lib-num">${num}</span><input class="track-lib-name" data-index="${count}" value="Track ${num}"><button class="track-lib-del" data-index="${count}" title="Remove">✕</button>`;
+        list.appendChild(row);
+        row.querySelector('.track-lib-del')?.addEventListener('click', () => row.remove());
+    });
+
+    // Track library — delete buttons
+    document.querySelectorAll('.track-lib-del').forEach(btn => {
+        btn.addEventListener('click', () => btn.closest('.track-lib-row')?.remove());
+    });
+
+    // Track library — save
+    document.getElementById('btn-save-tracks')?.addEventListener('click', () => {
+        const tracks = [];
+        document.querySelectorAll('.track-lib-row').forEach((row, i) => {
+            const num = parseInt(row.querySelector('.track-lib-num')?.textContent || (i+1));
+            const name = row.querySelector('.track-lib-name')?.value || `Track ${i+1}`;
+            tracks.push({ number: num, name });
+        });
+        apiPut('/api/prayer/tracks', { tracks }).then(() => {
+            state.prayerConfig.track_library = tracks;
+            const btn = document.getElementById('btn-save-tracks');
+            if (btn) { btn.textContent = '✓ Saved!'; setTimeout(() => btn.textContent = '💾 Save Library', 2000); }
+        });
+    });
     document.getElementById('btn-led-on')?.addEventListener('click',       () => apiPost('/api/command', { action:'led', state:'on' }));
     document.getElementById('btn-led-off')?.addEventListener('click',      () => apiPost('/api/command', { action:'led', state:'off' }));
     document.getElementById('btn-led-toggle')?.addEventListener('click',   () => apiPost('/api/command', { action:'led', state:'toggle' }));

@@ -24,8 +24,9 @@ export function connectSocket() {
         });
         state.socket.on('telemetry', (data) => {
             state.telemetry = { ...state.telemetry, ...data };
-            if (data.illumination) state.illumination = data.illumination;
-            if (data.city_time)    state.cityTime     = data.city_time;
+            if (data.illumination)   state.illumination   = data.illumination;
+            if (data.city_time)      state.cityTime       = data.city_time;
+            if (data.prayer_config)  state.prayerConfig   = { ...state.prayerConfig, ...data.prayer_config };
             updateDashboardUI();
             updateClockUI();
         });
@@ -36,6 +37,17 @@ export function connectSocket() {
         state.socket.on('illumination_update', (data) => {
             state.illumination = data;
             updateIlluminationUI();
+            updateDashboardUI();
+        });
+        state.socket.on('prayer_config', (data) => {
+            state.prayerConfig = { ...state.prayerConfig, ...data };
+            updateDashboardUI();
+        });
+        state.socket.on('adhan_playing', (data) => {
+            state.adhanPlaying = data;
+            updateDashboardUI();
+            // Auto-clear after 30s
+            setTimeout(() => { state.adhanPlaying = null; updateDashboardUI(); }, 30000);
         });
         state.socket.on('connect_error', (err) => console.log('[SC] SocketIO error:', err.message));
     } catch (e) {
@@ -71,8 +83,9 @@ function pollTelemetry() {
         .then(data => {
             if (!data) return;
             state.telemetry = { ...state.telemetry, ...data };
-            if (data.illumination) state.illumination = data.illumination;
-            if (data.city_time)    state.cityTime     = data.city_time;
+            if (data.illumination)   state.illumination   = data.illumination;
+            if (data.city_time)      state.cityTime       = data.city_time;
+            if (data.prayer_config)  state.prayerConfig   = { ...state.prayerConfig, ...data.prayer_config };
             if (state.page === 'home') updateDashboardUI();
             updateClockUI();
         })

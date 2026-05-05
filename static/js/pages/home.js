@@ -5,10 +5,35 @@
 import { state } from '../state.js';
 import { svgHome, svgMosque, svgCastle, svgStreet } from '../components/svg.js';
 
+const PRAYER_ICONS = { Fajr: '🌅', Dhuhr: '☀️', Asr: '🌤', Maghrib: '🌇', Isha: '🌙' };
+
+function _renderPrayerRows(pc, cityTime) {
+    const times = pc.prayer_times || {};
+    const nextName = pc.next_prayer?.name || '';
+    const currentMin = (cityTime.hours || 0) * 60 + (cityTime.minutes || 0);
+
+    return ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].map(name => {
+        const t = times[name] || '--:--';
+        const icon = PRAYER_ICONS[name] || '🕌';
+        const isNext = name === nextName;
+        const parts = t.split(':');
+        const prayerMin = parts.length === 2 ? parseInt(parts[0]) * 60 + parseInt(parts[1]) : -1;
+        const isPast = prayerMin >= 0 && prayerMin <= currentMin;
+
+        return `<div class="prayer-row ${isNext ? 'prayer-next' : ''} ${isPast && !isNext ? 'prayer-past' : ''}">
+            <span class="prayer-icon">${icon}</span>
+            <span class="prayer-name">${name}</span>
+            <span class="prayer-time">${t}</span>
+            <span class="prayer-indicator">${isNext ? '◀ NEXT' : ''}</span>
+        </div>`;
+    }).join('');
+}
+
 export function renderHomePage() {
     const content = document.getElementById('page-content');
     const t  = state.telemetry;
     const il = state.illumination;
+    const pc = state.prayerConfig;
 
     const gasLevel   = t.gas || 0;
     const gasPercent = Math.min(100, (gasLevel / 4095) * 100);
@@ -69,7 +94,7 @@ export function renderHomePage() {
     </div>
 
     <!-- MOSQUE ZONE -->
-    <div class="zone-section" id="zone-mosque">
+    <div class="zone-section ${state.adhanPlaying ? 'adhan-active' : ''}" id="zone-mosque">
         <div class="zone-accent mosque-accent"></div>
         <div class="zone-header">
             <div class="zone-header-left">
@@ -79,7 +104,7 @@ export function renderHomePage() {
                     <div class="zone-desc">Prayer hall · Speaker system</div>
                 </div>
             </div>
-            <span class="card-badge ${t.speaker_active ? 'badge-active' : 'badge-inactive'}" id="speaker-badge">${t.speaker_active ? 'ATHAN PLAYING' : 'IDLE'}</span>
+            <span class="card-badge ${state.adhanPlaying ? 'badge-adhan-pulse' : t.speaker_active ? 'badge-active' : 'badge-inactive'}" id="speaker-badge">${state.adhanPlaying ? '🔊 ADHAN — ' + state.adhanPlaying.prayer : t.speaker_active ? 'PLAYING' : 'IDLE'}</span>
         </div>
         <div class="zone-body">
             <div class="zone-visual" id="svg-mosque-container">${svgMosque(il, t.speaker_active)}</div>
@@ -104,6 +129,19 @@ export function renderHomePage() {
                     <div class="zd-label">🕌 Mosque Lights</div>
                     <div class="zd-value" style="color:${il.mosque ? 'var(--accent-amber)' : 'var(--text-muted)'}" id="mosque-lights-status">${il.mosque ? 'ON' : 'OFF'}</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Prayer Times Table -->
+        <div class="prayer-times-section">
+            <div class="prayer-times-header">
+                <span class="prayer-times-title">🕋 Prayer Times</span>
+                <span class="prayer-adhan-badge ${pc.adhan_enabled ? 'enabled' : 'disabled'}" id="adhan-auto-badge">
+                    ${pc.adhan_enabled ? '🔔 Auto-Adhan ON' : '🔕 Auto-Adhan OFF'}
+                </span>
+            </div>
+            <div class="prayer-times-table" id="prayer-times-table">
+                ${_renderPrayerRows(pc, state.cityTime)}
             </div>
         </div>
     </div>
@@ -159,7 +197,7 @@ export function renderHomePage() {
                     <div class="zone-desc">Public road · Smart lighting</div>
                 </div>
             </div>
-            <span class="card-badge badge-active" id="ldr-badge">${(t.light || 0) < 2000 ? 'LAMPS ON' : 'DAYLIGHT'}</span>
+            <span class="card-badge badge-active" id="ldr-badge">${il.street ? 'LAMPS ON' : 'DAYLIGHT'}</span>
         </div>
         <div class="zone-body">
             <div class="zone-visual" id="svg-street-container">${svgStreet(t.light || 0)}</div>
@@ -174,7 +212,7 @@ export function renderHomePage() {
                 </div>
                 <div class="zone-data-card">
                     <div class="zd-label">💡 Street Lamp Status</div>
-                    <div class="zd-value" style="color:${(t.light||0) < (t.street_light_threshold||2000) ? 'var(--accent-amber)' : 'var(--text-muted)'}" id="street-lamp-status">${(t.light||0) < (t.street_light_threshold||2000) ? 'ON — Auto' : 'OFF — Daylight'}</div>
+                    <div class="zd-value" style="color:${il.street ? 'var(--accent-amber)' : 'var(--text-muted)'}" id="street-lamp-status">${il.street ? 'ON' : 'OFF'}</div>
                 </div>
             </div>
         </div>
